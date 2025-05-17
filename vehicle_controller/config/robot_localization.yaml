@@ -1,0 +1,46 @@
+ekf_filter_node:
+  ros__parameters:
+    # Use simulation time or real-time
+    use_sim_time: true
+
+    # Set the frame names
+    map_frame: map              # Global frame for localization
+    world_frame: odom           # Links map to odom in 2D
+    odom_frame: odom            # Frame representing odometry
+    base_link_frame: f1tenth_1  # Robot's physical body frame
+    imu0_frame: imu             # Frame for the IMU sensor
+
+    # Odometry sources
+    odom0: "/odom"                 # Odometry topic
+    odom0_config: [ true,  true,  false, 
+                    true,  true,  false,
+                    false, false, true, 
+                    false, false, true]  # 6DOF: x, y, theta (pose and orientation)
+
+    # IMU sources
+    imu0: "/autodrive/f1tenth_1/imu" # IMU topic
+    imu0_config: [  false, false, true, 
+                    false, false, true, 
+                    false, false, false, 
+                    true, true, false]    # Orientation (yaw) from IMU
+
+    # Add additional sensors here (e.g., GPS, LiDAR, etc.)
+    
+    # Set the process noise
+    process_noise_covariance: [ 1e-9, 0.0, 0.0, 0.0, 0.0, 0.0,
+                                0.0, 1e-9, 0.0, 0.0, 0.0, 0.0,
+                                0.0, 0.0, 1e-9, 0.0, 0.0, 0.0,
+                                0.0, 0.0, 0.0, 1e-9, 0.0, 0.0,
+                                0.0, 0.0, 0.0, 0.0, 1e-9, 0.0,
+                                0.0, 0.0, 0.0, 0.0, 0.0, 1e-9]
+    sensor_timeout: 0.1
+
+    # Enable position and orientation estimation
+    two_d_mode: true                # Set to true if the robot operates in 2D (no vertical movement)
+    publish_tf: true                # If true, will publish transforms
+    publish_aft_mapped_to_tf: true  # If true, will publish "aft_mapped" frame transforms
+
+    # Set the maximum allowed change between updates
+    max_waiting_time: 0.1          # Wait time for sensor data synchronization
+    # You can adjust other parameters to better fit your robot
+
